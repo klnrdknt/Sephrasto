@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "sephrasto-rework"
+version = "0.1.0"
+description = "Trying to add some development best practices to the great serasto tool."
+authors = ["Luis Dekant <dekant.luis@gmx.de>"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.10"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
