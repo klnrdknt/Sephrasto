@@ -1,19 +1,22 @@
-from PyQt5 import QtCore, QtWidgets, QtGui
 from CharakterAssistent import ChoicePopup
-from CharakterAssistent import Choice
+from PyQt5 import QtCore, QtWidgets
+
 
 class ChoicePopupWrapper(object):
     def __init__(self, choiceList, windowTitle):
         super().__init__()
         self.formMain = QtWidgets.QDialog()
         self.formMain.setWindowFlags(
-            QtCore.Qt.Window |
-            QtCore.Qt.CustomizeWindowHint |
-            QtCore.Qt.WindowTitleHint |
-            QtCore.Qt.WindowCloseButtonHint)
+            QtCore.Qt.Window
+            | QtCore.Qt.CustomizeWindowHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint
+        )
         self.ui = ChoicePopup.Ui_formMain()
         self.ui.setupUi(self.formMain)
-        self.formMain.setWindowTitle(self.formMain.windowTitle() + " (" + windowTitle + ")")
+        self.formMain.setWindowTitle(
+            self.formMain.windowTitle() + " (" + windowTitle + ")"
+        )
         self.setupMainForm(choiceList)
         self.formMain.show()
 
@@ -36,7 +39,7 @@ class ChoicePopupWrapper(object):
                 continue
 
             button = QtWidgets.QRadioButton(choiceStr)
-            if len(self.buttons) == 0:
+            if not self.buttons:
                 button.setChecked(True)
             self.buttons.append(button)
             self.ui.verticalLayout.addWidget(button)
