@@ -188,7 +188,7 @@ class EquipWrapper(QtCore.QObject):
         while count < len(Wolke.Char.rüstung):
             if count < len(Rarr):
                 R = Wolke.Char.rüstung[count]
-                eval("self.uiEq.edit" + Rarr[count] + f"name.setText({R.name})")
+                eval("self.uiEq.edit" + Rarr[count] + f"name.setText('{R.name}')")
                 eval("self.uiEq.spin" + Rarr[count] + "be.setValue(" + str(R.be) + ")")
                 eval(
                     "self.uiEq.spin"
@@ -400,8 +400,11 @@ class EquipWrapper(QtCore.QObject):
     def loadWeaponIntoFields(self, W, index):
         Warr = ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"]
         count = index - 1
+
         eval(
-            "self.uiEq.edit" + Warr[count] + f"name.setText({W.anzeigename or W.name})"
+            "self.uiEq.edit"
+            + Warr[count]
+            + f"name.setText('{W.anzeigename or W.name}')"
         )
         eval("self.uiEq.label" + Warr[count] + f"typ.setText({W.name})")
         self.refreshKampfstile(count)
