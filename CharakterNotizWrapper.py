@@ -1,8 +1,8 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtCore, QtWidgets
+
 import CharakterNotiz
-import lxml.etree as etree
-import logging
 from Wolke import Wolke
+
 
 class CharakterNotizWrapper(QtCore.QObject):
     modified = QtCore.pyqtSignal()

@@ -1,18 +1,10 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
+from CharakterAssistent import Wizard, WizardWrapper
+from PyQt5 import QtWidgets
+
 from EventBus import EventBus
-from Wolke import Wolke
-import tempfile
-import pdf
-import os
-import re
-import math
-from Hilfsmethoden import Hilfsmethoden, WaffeneigenschaftException
-import Objekte
-from CharakterAssistent import Wizard
-from CharakterAssistent import WizardWrapper
+
 
 class Plugin:
-
     def __init__(self):
         EventBus.addAction("charaktereditor_geoeffnet", self.charakterGeladenHook)
 

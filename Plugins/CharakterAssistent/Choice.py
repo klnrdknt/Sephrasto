@@ -1,5 +1,6 @@
 from Wolke import Wolke
 
+
 class Choice(object):
     def __init__(self):
         super().__init__()
@@ -11,7 +12,13 @@ class Choice(object):
     def toString(self):
         valueStr = ""
         prefix = ""
-        if self.typ == "Freie-Fertigkeit":
+        if self.typ == "Attribut":
+            valueStr = " +" + str(self.wert) if self.wert >= 0 else " " + str(self.wert)
+        elif self.typ == "Fertigkeit":
+            valueStr = " +" + str(self.wert) if self.wert >= 0 else " " + str(self.wert)
+            current = Wolke.Char.fertigkeiten[self.name].wert
+            valueStr += " (aktuell +" + str(current) + ")"
+        elif self.typ == "Freie-Fertigkeit":
             if self.wert == 1:
                 valueStr = " (+) I"
             elif self.wert == 2:
@@ -20,30 +27,14 @@ class Choice(object):
                 valueStr = " III"
             else:
                 return None
-        elif self.typ == "Fertigkeit":
-            if self.wert >= 0:
-                valueStr = " +" + str(self.wert)
-            else:
-                valueStr = " " + str(self.wert)
-
-            current = Wolke.Char.fertigkeiten[self.name].wert
-            valueStr += " (aktuell +" + str(current) + ")"
         elif self.typ == "Übernatürliche-Fertigkeit":
-            if self.wert >= 0:
-                valueStr = " +" + str(self.wert)
-            else:
-                valueStr = " " + str(self.wert)
-
+            valueStr = " +" + str(self.wert) if self.wert >= 0 else " " + str(self.wert)
             current = Wolke.Char.übernatürlicheFertigkeiten[self.name].wert
             valueStr += " (aktuell +" + str(current) + ")"
-        elif self.typ == "Attribut":
-            if self.wert >= 0:
-                valueStr = " +" + str(self.wert)
-            else:
-                valueStr = " " + str(self.wert)
         else:
             prefix = self.typ + " "
         return prefix + self.name + valueStr
+
 
 class ChoiceList(object):
     def __init__(self):
@@ -68,23 +59,20 @@ class ChoiceList(object):
                     return False
 
         if self.varianten:
-            for index in variantsSelected:
-                if index in self.varianten:
-                    return True
-            return False
+            return any(index in self.varianten for index in variantsSelected)
         return True
 
     def doVariantenIntersect(self, other):
         if not self.varianten or not other.varianten:
             return False
 
-        for index in self.varianten:
-            if index in other.varianten:
-                return True
-        return False
+        return any(index in other.varianten for index in self.varianten)
 
     def filter(self, choice):
-        self.choices = [c for c in self.choices if not (c.name == choice.name and c.typ == choice.typ)]
+        self.choices = [
+            c for c in self.choices if c.name != choice.name or c.typ != choice.typ
+        ]
+
 
 class ChoiceListCollection(object):
     def __init__(self):
@@ -93,11 +81,13 @@ class ChoiceListCollection(object):
         self.choiceLists = []
 
     def filter(self, startIndex, choice):
-        #Remove choice further down the choices list
+        # Remove choice further down the choices list
         choiceList = self.choiceLists[startIndex]
         if startIndex + 1 == len(self.choiceLists):
             return
         for i in range(startIndex + 1, len(self.choiceLists)):
             cl = self.choiceLists[i]
-            if (not choiceList.hasVarianten() and not cl.hasVarianten()) or choiceList.doVariantenIntersect(cl):
+            if (
+                not choiceList.hasVarianten() and not cl.hasVarianten()
+            ) or choiceList.doVariantenIntersect(cl):
                 cl.filter(choice)
